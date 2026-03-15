@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: bequer_db
+    restart: always
+    environment:
+      POSTGRES_DB: ${DB_NAME:-bequer_db}
+      POSTGRES_USER: ${DB_USER:-bequer_user}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-bequer_secret}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: bequer_backend
+    restart: always
+    depends_on:
+      - db
+    environment:
+      - DATABASE_URL=postgres://${DB_USER:-bequer_user}:${DB_PASSWORD:-bequer_secret}@db:5432/${DB_NAME:-bequer_db}
+      - SECRET_KEY=${SECRET_KEY:-django-insecure-fallback-key}
+      - DEBUG=False
+      - FRONTEND_URL=https://thebequer.tech
+    volumes:
+      - media_volume:/app/media
+      - static_volume:/app/staticfiles
+    expose:
+      - "8000"
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: bequer_frontend
+    restart: always
+    depends_on:
+      - backend
+    ports:
+      - "80:80"
+    volumes:
+      - static_volume:/usr/share/nginx/html/static
+      - media_volume:/usr/share/nginx/html/media
+
+volumes:
+  postgres_data:
+  static_volume:
+  media_volume:
