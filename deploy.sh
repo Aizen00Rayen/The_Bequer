@@ -34,7 +34,7 @@ echo "[2/6] Setting up repository at $APP_DIR..."
 
 if [ -d "$APP_DIR/.git" ]; then
   echo "  → Pulling latest changes..."
-  git -C "$APP_DIR" pull origin main
+  git -C "$APP_DIR" pull origin master
 else
   echo "  → Cloning repository..."
   git clone https://github.com/Aizen00Rayen/theBequer.git "$APP_DIR"
