@@ -44,14 +44,6 @@ services:
       - backend
     expose:
       - "80"
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.thebequer-frontend.rule=Host(`thebequer.tech`)"
-      - "traefik.http.routers.thebequer-frontend.entrypoints=websecure"
-      - "traefik.http.routers.thebequer-frontend.tls=true"
-      - "traefik.http.routers.thebequer-frontend.tls.certresolver=letsencrypt"
-      - "traefik.http.services.thebequer-frontend.loadbalancer.server.port=80"
-      - "traefik.docker.network=dokploy-network"
     volumes:
       - static_volume:/usr/share/nginx/html/static
       - media_volume:/usr/share/nginx/html/media
