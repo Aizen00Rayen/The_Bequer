@@ -10,6 +10,9 @@ services:
       POSTGRES_PASSWORD: ${DB_PASSWORD:-bequer_secret}
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    networks:
+      - default
+      - dokploy-network
 
   backend:
     build:
@@ -28,6 +31,9 @@ services:
       - static_volume:/app/staticfiles
     expose:
       - "8000"
+    networks:
+      - default
+      - dokploy-network
 
   frontend:
     build:
