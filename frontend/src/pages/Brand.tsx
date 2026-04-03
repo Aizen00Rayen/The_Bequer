@@ -8,6 +8,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { motion } from "framer-motion";
+import logo from "@/assets/new_logo.png";
 
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -152,31 +153,32 @@ const Brand = () => {
                             >
                                 <div className="inline-flex items-center rounded-full border border-primary/30 bg-primary/10 px-4 py-1.5 text-sm font-medium text-primary mb-6">
                                     <Sparkles className="mr-2 h-4 w-4" />
-                                    Partenaire Officiel — Spectra Agency
+                                    Une collaboration, une équipe, votre marque
                                 </div>
 
                                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-foreground leading-tight mb-6">
-                                    Donnez vie à votre{" "}
+                                    <span className="font-light">The Bequer & Spectra :</span>{" "}
+                                    Nous créons votre{" "}
                                     <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">
-                                        marque
+                                        marque cosmétique
                                     </span>{" "}
-                                    avec Spectra
+                                    ensemble
                                 </h1>
 
                                 <p className="text-xl text-muted-foreground leading-relaxed mb-8 max-w-2xl">
-                                    De l'idée au lancement, Spectra Agency transforme votre vision en une marque puissante, cohérente et mémorable sur tous les canaux digitaux.
+                                    The Bequer et Spectra collaborent et travaillent ensemble en tant qu'équipe pour vous accompagner de la première formulation jusqu'au lancement digital de votre marque.
                                 </p>
 
                                 <div className="flex flex-wrap gap-3 justify-center lg:justify-start">
-                                    {["Branding", "Web & Mobile", "Marketing", "Design", "Social Media"].map((tag, i) => (
+                                    {["Formulation", "Branding", "Web & App", "Marketing", "Social Media"].map((tag, i) => (
                                         <span key={i} className="px-3 py-1 bg-card border border-border rounded-full text-sm font-medium text-foreground">
-                                            ✦ {tag}
+                                            ✶ {tag}
                                         </span>
                                     ))}
                                 </div>
                             </motion.div>
 
-                            {/* Right: Spectra Logo Card */}
+                            {/* Right: Collaboration Card */}
                             <motion.div
                                 className="w-full lg:w-96 shrink-0"
                                 initial={{ opacity: 0, x: 30 }}
@@ -187,7 +189,7 @@ const Brand = () => {
                                     {/* Glow */}
                                     <div className="absolute inset-0 bg-gradient-to-r from-primary to-accent rounded-3xl blur-2xl opacity-20 group-hover:opacity-40 transition-opacity duration-500" />
                                     <div className="relative bg-black rounded-3xl p-8 border border-white/10 shadow-2xl overflow-hidden text-center">
-                                        {/* Geometric background pattern */}
+                                        {/* Background pattern */}
                                         <div className="absolute inset-0 opacity-10">
                                             {[...Array(6)].map((_, i) => (
                                                 <div key={i} className="absolute border border-white/20 rotate-12"
@@ -198,43 +200,60 @@ const Brand = () => {
                                             ))}
                                         </div>
 
-                                        {/* Logo image — if available, otherwise styled text logo */}
-                                        <div className="relative z-10 flex flex-col items-center">
-                                            <img
-                                                src="/spectra-logo.png"
-                                                alt="Spectra Agency"
-                                                className="w-40 h-40 object-contain mb-4 drop-shadow-2xl"
-                                                onError={(e) => {
-                                                    // Fallback to styled text if image missing
-                                                    (e.target as HTMLImageElement).style.display = "none";
-                                                    const fallback = document.getElementById("spectra-fallback-logo");
-                                                    if (fallback) fallback.style.display = "flex";
-                                                }}
-                                            />
-                                            {/* Fallback logo in CSS if image not found */}
-                                            <div
-                                                id="spectra-fallback-logo"
-                                                className="hidden w-36 h-36 mb-4 items-center justify-center"
-                                            >
-                                                <div className="relative">
-                                                    <div className="text-7xl font-black text-white" style={{
-                                                        fontFamily: "system-ui",
-                                                        textShadow: "0 0 30px rgba(255,255,255,0.5), 2px 2px 0 #888, 4px 4px 0 #666",
-                                                        letterSpacing: "-0.05em"
-                                                    }}>S</div>
+                                        <div className="relative z-10">
+                                            {/* Logos side by side */}
+                                            <div className="flex items-center justify-center gap-4 mb-5">
+                                                {/* The Bequer logo */}
+                                                <div className="flex flex-col items-center">
+                                                    <img
+                                                        src={logo}
+                                                        alt="The Bequer"
+                                                        className="w-16 h-16 object-contain rounded-xl mb-2 drop-shadow-2xl"
+                                                    />
+                                                    <span className="text-white font-black text-sm tracking-widest uppercase">The Bequer</span>
+                                                </div>
+
+                                                {/* X Separator */}
+                                                <div className="flex flex-col items-center px-2">
+                                                    <span className="text-3xl font-black text-white/40">×</span>
+                                                </div>
+
+                                                {/* Spectra logo */}
+                                                <div className="flex flex-col items-center">
+                                                    <img
+                                                        src="/spectra-logo.png"
+                                                        alt="Spectra Agency"
+                                                        className="w-16 h-16 object-contain mb-2 drop-shadow-2xl"
+                                                        onError={(e) => {
+                                                            const el = e.target as HTMLImageElement;
+                                                            el.style.display = "none";
+                                                            const fallback = el.nextElementSibling as HTMLElement;
+                                                            if (fallback) fallback.style.display = "flex";
+                                                        }}
+                                                    />
+                                                    <div className="hidden w-16 h-16 mb-2 items-center justify-center">
+                                                        <div className="text-5xl font-black text-white" style={{ textShadow: "0 0 20px rgba(255,255,255,0.4)" }}>S</div>
+                                                    </div>
+                                                    <span className="text-white font-black text-sm tracking-widest uppercase">Spectra</span>
                                                 </div>
                                             </div>
-                                            <div className="text-white font-black text-3xl tracking-[0.3em] uppercase mb-1">SPECTRA</div>
-                                            <div className="text-white/50 text-xs tracking-widest">AGENCY</div>
-                                        </div>
 
-                                        {/* Stars */}
-                                        <div className="flex justify-center gap-1 mt-4 relative z-10">
-                                            {[...Array(5)].map((_, i) => (
-                                                <Star key={i} className="h-4 w-4 text-yellow-400 fill-yellow-400" />
-                                            ))}
+                                            {/* Collab label */}
+                                            <div className="bg-white/10 rounded-xl px-4 py-3 mb-4 border border-white/10">
+                                                <p className="text-white/90 text-sm font-semibold mb-1">🤝 Une collaboration fusionnelle</p>
+                                                <p className="text-white/60 text-xs leading-relaxed">
+                                                    The Bequer et Spectra travaillent main dans la main en tant qu'équipe pour transformer votre idée en marque à succès.
+                                                </p>
+                                            </div>
+
+                                            {/* Stars */}
+                                            <div className="flex justify-center gap-1">
+                                                {[...Array(5)].map((_, i) => (
+                                                    <Star key={i} className="h-4 w-4 text-yellow-400 fill-yellow-400" />
+                                                ))}
+                                            </div>
+                                            <p className="text-white/50 text-xs mt-2">Partenariat premium & exclusif</p>
                                         </div>
-                                        <p className="text-white/60 text-xs mt-2 relative z-10">Agence digitale premium</p>
                                     </div>
                                 </div>
                             </motion.div>
@@ -242,60 +261,140 @@ const Brand = () => {
                     </div>
                 </section>
 
-                {/* ── WHAT SPECTRA DOES ── */}
+                {/* ── ROADMAP SECTION ── */}
                 <section className="py-16 md:py-20">
-                    <div className="container max-w-6xl mx-auto px-4">
+                    <div className="container max-w-5xl mx-auto px-4">
                         <div className="text-center mb-14">
                             <div className="inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/10 px-4 py-1.5 text-sm font-medium text-accent mb-4">
-                                <Zap className="h-4 w-4" /> Nos expertises
+                                <Zap className="h-4 w-4" /> Notre parcours ensemble
                             </div>
                             <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-                                Tout ce dont votre marque a besoin,
-                                <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent"> au même endroit</span>
+                                De la première idée au
+                                <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent"> lancement officiel</span>
                             </h2>
                             <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-                                Spectra Agency est une agence digitale full-service. Nous prenons en charge chaque aspect de votre présence digitale pour que vous puissiez vous concentrer sur votre business.
+                                Voici comment nous vous accompagnons, étape par étape, pour transformer votre vision en une marque cosmétique professionnelle.
                             </p>
                         </div>
 
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-                            {services.map((svc, i) => (
+                        <div className="relative">
+                            {/* Vertical line */}
+                            <div className="absolute left-8 md:left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-primary via-accent to-primary/20 hidden sm:block" style={{ transform: 'translateX(-50%)' }} />
+
+                            {[
+                                {
+                                    step: "01",
+                                    phase: "The Bequer",
+                                    title: "Réunion de lancement (Meeting)",
+                                    description: "Nous échangeons pour comprendre votre vision. Cette première rencontre permet de poser les bases de notre collaboration en équipe.",
+                                    icon: MessageCircle,
+                                    color: "from-violet-500/20 to-purple-500/10",
+                                    iconBg: "bg-violet-500",
+                                    side: "left",
+                                },
+                                {
+                                    step: "02",
+                                    phase: "The Bequer",
+                                    title: "Choix du produit",
+                                    description: "Nous vous aidons à choisir les produits stratégiques pour votre future gamme cosmétique.",
+                                    icon: Star,
+                                    color: "from-blue-500/20 to-cyan-500/10",
+                                    iconBg: "bg-blue-500",
+                                    side: "right",
+                                },
+                                {
+                                    step: "03",
+                                    phase: "The Bequer",
+                                    title: "Formulation",
+                                    description: "Nos experts créent vos formules exclusives. Nous passons de l'idée à la réalité scientifique avec précision.",
+                                    icon: Sparkles,
+                                    color: "from-pink-500/20 to-rose-500/10",
+                                    iconBg: "bg-pink-500",
+                                    side: "left",
+                                },
+                                {
+                                    step: "04",
+                                    phase: "The Bequer",
+                                    title: "Validation & confirmation",
+                                    description: "Nous validons ensemble le produit final. Une fois confirmé, nous passons aux étapes de design et de marketing.",
+                                    icon: CheckCircle2,
+                                    color: "from-green-500/20 to-emerald-500/10",
+                                    iconBg: "bg-green-500",
+                                    side: "right",
+                                },
+                                {
+                                    step: "05",
+                                    phase: "Spectra Services",
+                                    title: "Identité visuelle & branding",
+                                    description: "Nous créons l'univers visuel de votre marque : logo, packaging et charte graphique premium.",
+                                    icon: Palette,
+                                    color: "from-orange-500/20 to-amber-500/10",
+                                    iconBg: "bg-orange-500",
+                                    side: "left",
+                                },
+                                {
+                                    step: "06",
+                                    phase: "Spectra Services",
+                                    title: "Présence digitale",
+                                    description: "Nous construisons votre e-shop et votre présence sur les réseaux sociaux pour lancer les ventes.",
+                                    icon: Globe,
+                                    color: "from-indigo-500/20 to-blue-500/10",
+                                    iconBg: "bg-indigo-500",
+                                    side: "right",
+                                },
+                                {
+                                    step: "07",
+                                    phase: "Lancement",
+                                    title: "Lancement officiel 🚀",
+                                    description: "Nous lançons votre marque sur le marché. Notre équipe reste à vos côtés pour assurer le succès de votre entreprise.",
+                                    icon: Zap,
+                                    color: "from-yellow-500/20 to-orange-500/10",
+                                    iconBg: "bg-gradient-to-r from-primary to-accent",
+                                    side: "left",
+                                },
+                            ].map((item, i) => (
                                 <motion.div
                                     key={i}
-                                    className={`group relative p-6 rounded-2xl border border-border bg-gradient-to-br ${svc.color} hover:border-primary/30 hover:shadow-lg transition-all duration-300`}
-                                    initial={{ opacity: 0, y: 20 }}
+                                    className={`relative flex flex-col sm:flex-row gap-6 mb-10 ${item.side === 'right' ? 'sm:flex-row-reverse' : ''
+                                        }`}
+                                    initial={{ opacity: 0, y: 24 }}
                                     whileInView={{ opacity: 1, y: 0 }}
                                     viewport={{ once: true }}
-                                    transition={{ delay: i * 0.07, duration: 0.4 }}
-                                    whileHover={{ y: -4 }}
+                                    transition={{ delay: i * 0.08, duration: 0.5 }}
                                 >
-                                    <div className={`w-11 h-11 rounded-xl bg-background/80 border border-border flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300 ${svc.iconColor}`}>
-                                        <svc.icon className="h-5 w-5" />
+                                    {/* Timeline dot */}
+                                    <div className="absolute left-8 sm:left-1/2 top-6 w-4 h-4 rounded-full border-4 border-background bg-primary hidden sm:block" style={{ transform: 'translate(-50%, 0)' }} />
+
+                                    {/* Spacer for alternating */}
+                                    <div className="hidden sm:block flex-1" />
+
+                                    {/* Card */}
+                                    <div className={`flex-1 sm:max-w-[calc(50%-2rem)] ${item.side === 'right' ? 'sm:mr-8' : 'sm:ml-8'}`}>
+                                        <div className={`p-6 rounded-2xl border border-border bg-gradient-to-br ${item.color} hover:shadow-lg transition-all duration-300`}>
+                                            <div className="flex items-center gap-3 mb-3">
+                                                <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${item.iconBg} shrink-0`}>
+                                                    <item.icon className="h-5 w-5 text-white" />
+                                                </div>
+                                                <div>
+                                                    <span className={`text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-full ${item.phase === 'Cosmétique' ? 'bg-pink-500/20 text-pink-400' :
+                                                        item.phase === 'Digital' ? 'bg-blue-500/20 text-blue-400' :
+                                                            'bg-yellow-500/20 text-yellow-400'
+                                                        }`}>{item.phase}</span>
+                                                    <p className="text-[11px] text-muted-foreground mt-0.5">Étape {item.step}</p>
+                                                </div>
+                                            </div>
+                                            <h3 className="font-bold text-foreground text-base mb-2">{item.title}</h3>
+                                            <p className="text-sm text-muted-foreground leading-relaxed">{item.description}</p>
+                                        </div>
                                     </div>
-                                    <h3 className="font-bold text-foreground text-base mb-2">{svc.title}</h3>
-                                    <p className="text-sm text-muted-foreground leading-relaxed">{svc.description}</p>
                                 </motion.div>
                             ))}
-
-                            {/* + 1 extra CTA card */}
-                            <motion.div
-                                className="group relative p-6 rounded-2xl border-2 border-dashed border-primary/30 bg-primary/5 hover:bg-primary/10 hover:border-primary/50 transition-all duration-300 flex flex-col items-center justify-center text-center"
-                                initial={{ opacity: 0, y: 20 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }}
-                                transition={{ delay: 0.5, duration: 0.4 }}
-                                whileHover={{ y: -4 }}
-                            >
-                                <Sparkles className="h-8 w-8 text-primary mb-3 group-hover:scale-110 transition-transform" />
-                                <h3 className="font-bold text-foreground text-base mb-1">Et bien plus encore…</h3>
-                                <p className="text-xs text-muted-foreground">Consulting, automatisation, formations et solutions sur mesure.</p>
-                            </motion.div>
                         </div>
                     </div>
                 </section>
 
                 {/* ── CONTACT + FORM SECTION ── */}
-                <section className="py-8">
+                < section className="py-8" >
                     <div className="container max-w-6xl mx-auto px-4">
                         <div className="grid lg:grid-cols-2 gap-12 items-start">
 
@@ -303,20 +402,20 @@ const Brand = () => {
                             <div className="space-y-8">
                                 <div>
                                     <h2 className="text-3xl font-bold text-foreground mb-3">
-                                        Démarrez votre projet avec Spectra
+                                        Démarrez votre projet avec nous
                                     </h2>
                                     <p className="text-muted-foreground text-lg leading-relaxed">
-                                        Remplissez le formulaire et notre équipe Spectra vous recontactera sous 24h pour une consultation gratuite et sans engagement.
+                                        Remplissez le formulaire et notre équipe vous recontactera sous 24h pour une consultation gratuite et sans engagement.
                                     </p>
                                 </div>
 
                                 {/* Why choose us */}
                                 <div className="space-y-3">
                                     {[
-                                        "Équipe expérimentée et certifiée",
+                                        "Collaboration unique The Bequer × Spectra",
+                                        "Expertise cosmétique et digitale combinée",
+                                        "Accompagnement de A à Z par une seule équipe",
                                         "Solutions sur mesure adaptées à votre budget",
-                                        "Suivi et support continu après livraison",
-                                        "Portfolio de + 50 marques accompagnées",
                                         "Délais respectés, résultats garantis",
                                     ].map((item, i) => (
                                         <div key={i} className="flex items-center gap-3">
@@ -331,7 +430,7 @@ const Brand = () => {
                                     <h3 className="font-bold text-foreground text-lg">Contactez-nous directement</h3>
 
                                     <a
-                                        href="https://wa.me/213556614740"
+                                        href="https://wa.me/213655380817"
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         className="flex items-center gap-4 p-4 rounded-xl border border-green-500/20 bg-green-500/5 hover:bg-green-500/10 hover:border-green-500/40 transition-all duration-200 group"
@@ -341,14 +440,14 @@ const Brand = () => {
                                         </div>
                                         <div>
                                             <p className="font-semibold text-foreground">WhatsApp</p>
-                                            <p className="text-sm text-muted-foreground">+213 556 61 47 40</p>
+                                            <p className="text-sm text-muted-foreground">+213 655 38 08 17</p>
                                             <p className="text-xs text-green-500 font-medium mt-0.5">Répondons généralement en moins d'une heure</p>
                                         </div>
                                         <ArrowRight className="h-5 w-5 text-muted-foreground ml-auto group-hover:text-green-500 group-hover:translate-x-1 transition-all" />
                                     </a>
 
                                     <a
-                                        href="mailto:spectra26agency@gmail.com"
+                                        href="mailto:contact@thebequer.tech"
                                         className="flex items-center gap-4 p-4 rounded-xl border border-primary/20 bg-primary/5 hover:bg-primary/10 hover:border-primary/40 transition-all duration-200 group"
                                     >
                                         <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
@@ -356,7 +455,7 @@ const Brand = () => {
                                         </div>
                                         <div>
                                             <p className="font-semibold text-foreground">Email</p>
-                                            <p className="text-sm text-muted-foreground">spectra26agency@gmail.com</p>
+                                            <p className="text-sm text-muted-foreground">contact@thebequer.tech</p>
                                             <p className="text-xs text-primary font-medium mt-0.5">Réponse sous 24h ouvrées</p>
                                         </div>
                                         <ArrowRight className="h-5 w-5 text-muted-foreground ml-auto group-hover:text-primary group-hover:translate-x-1 transition-all" />
@@ -375,11 +474,11 @@ const Brand = () => {
                                         </div>
                                         <h3 className="text-2xl font-bold text-foreground">Demande Reçue !</h3>
                                         <p className="text-muted-foreground max-w-sm">
-                                            Merci pour votre confiance. L'équipe <strong>Spectra Agency</strong> vous contactera dans les 24 heures pour discuter de votre projet.
+                                            Merci pour votre confiance. Notre équipe vous contactera dans les 24 heures pour discuter de votre projet.
                                         </p>
                                         <div className="flex gap-3 mt-4">
                                             <a
-                                                href="https://wa.me/213556614740"
+                                                href="https://wa.me/213655380817"
                                                 target="_blank"
                                                 rel="noopener noreferrer"
                                                 className="flex items-center gap-2 px-5 py-2.5 bg-green-500 text-white rounded-xl text-sm font-semibold hover:bg-green-600 transition-colors"
@@ -502,7 +601,7 @@ const Brand = () => {
                                             </Button>
 
                                             <p className="text-center text-xs text-muted-foreground">
-                                                En soumettant ce formulaire, vous acceptez d'être contacté par l'équipe Spectra Agency.
+                                                En soumettant ce formulaire, vous acceptez d'être contacté par notre équipe.
                                             </p>
                                         </form>
                                     </Form>
@@ -510,12 +609,12 @@ const Brand = () => {
                             </div>
                         </div>
                     </div>
-                </section>
+                </section >
 
-            </main>
+            </main >
 
             <Footer />
-        </div>
+        </div >
     );
 };
 

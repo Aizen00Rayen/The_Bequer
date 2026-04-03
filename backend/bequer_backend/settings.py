@@ -25,9 +25,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-!)1g_m(6(ms6eq+7$#j(onm^lmneeaeu203=##6rx#5vb)n8kv')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = ["185.170.58.143", "thebequer.tech"]
+ALLOWED_HOSTS = ["185.170.58.143", "thebequer.tech", "localhost", "127.0.0.1"]
 
 
 # Application definition
@@ -151,6 +151,8 @@ CORS_ALLOW_ALL_ORIGINS = False # For development only
 CORS_ALLOWED_ORIGINS = [
      "https://thebequer.tech",
      "https://185.170.58.143",
+     "http://localhost:5173",
+     "http://127.0.0.1:5173",
  ]
 
 # Allow large file uploads (videos)
@@ -158,7 +160,7 @@ DATA_UPLOAD_MAX_MEMORY_SIZE = 524288000  # 500 MB
 FILE_UPLOAD_MAX_MEMORY_SIZE = 524288000  # 500 MB
 
 # Paypart Payment API
-PAYPART_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDkzLCJlbWFpbCI6InJheWVuYWJkZWxsYWguaG91YXJpQGdtYWlsLmNvbSIsImlhdCI6MTc3MjkyNzU0OCwiZXhwIjoxODU5MzI3NTQ4fQ.L2NWxs1-mcgVl8Ym_zMcC9f-t_KU1Fd-CbbkeyRujus"
+PAYPART_TOKEN = os.environ.get('PAYPART_TOKEN', '')
 
 # Frontend base URL (used for redirect URLs in payment)
 FRONTEND_URL = os.environ.get("FRONTEND_URL", "http://localhost:5173")

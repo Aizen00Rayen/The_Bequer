@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Star, Users, Award, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 import heroBg from "@/assets/hero-bg.jpg";
 
 const stats = [
@@ -10,6 +11,7 @@ const stats = [
 ];
 
 const HeroSection = () => {
+  const navigate = useNavigate();
   return (
     <section className="relative min-h-screen flex items-center overflow-hidden">
       {/* Background image with overlay */}
@@ -43,6 +45,7 @@ const HeroSection = () => {
             <div className="flex flex-col sm:flex-row gap-4 mb-12">
               <Button
                 size="lg"
+                onClick={() => navigate("/courses")}
                 className="bg-primary-foreground text-primary hover:bg-primary-foreground/90 text-base font-semibold px-8 h-13 rounded-xl"
               >
                 Commencer à Apprendre
@@ -51,6 +54,7 @@ const HeroSection = () => {
               <Button
                 size="lg"
                 variant="outline"
+                onClick={() => navigate("/brand")}
                 className="border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10 text-base font-semibold px-8 h-13 rounded-xl bg-transparent"
               >
                 Lancer ma Marque

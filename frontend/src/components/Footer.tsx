@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import logo from "@/assets/logo.jpeg";
+import logo from "@/assets/new_logo.png";
 
 const Footer = () => {
   return (
@@ -39,8 +39,21 @@ const Footer = () => {
           <div>
             <h4 className="font-semibold mb-4 text-sm uppercase tracking-wider">Contact</h4>
             <ul className="space-y-2 text-sm text-primary-foreground/60">
-              <li>hello@thebequer.com</li>
-              <li>Instagram: @thebequer</li>
+              <li>
+                <a href="mailto:contact@thebequer.tech" className="hover:text-primary-foreground transition-colors">
+                  contact@thebequer.tech
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://www.instagram.com/the_bequer?igsh=MXNkMHg3OWczanI2Mg=="
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-primary-foreground transition-colors"
+                >
+                  Instagram: @the_bequer
+                </a>
+              </li>
             </ul>
           </div>
         </div>

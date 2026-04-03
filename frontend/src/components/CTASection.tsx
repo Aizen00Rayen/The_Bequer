@@ -1,8 +1,10 @@
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 
 const CTASection = () => {
+  const navigate = useNavigate();
   return (
     <section className="py-20 md:py-28">
       <div className="container">
@@ -29,6 +31,7 @@ const CTASection = () => {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button
                 size="lg"
+                onClick={() => navigate("/courses")}
                 className="bg-primary-foreground text-primary hover:bg-primary-foreground/90 text-base font-semibold px-10 h-14 rounded-xl"
               >
                 Démarrer Maintenant
@@ -37,6 +40,7 @@ const CTASection = () => {
               <Button
                 size="lg"
                 variant="outline"
+                onClick={() => navigate("/brand")}
                 className="border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10 text-base font-semibold px-10 h-14 rounded-xl bg-transparent"
               >
                 Réserver une Consultation
