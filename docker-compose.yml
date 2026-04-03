@@ -26,6 +26,7 @@ services:
       - SECRET_KEY=${SECRET_KEY:-django-insecure-fallback-key}
       - DEBUG=False
       - FRONTEND_URL=https://thebequer.tech
+      - PAYPART_TOKEN=${PAYPART_TOKEN:-}
     volumes:
       - media_volume:/app/media
       - static_volume:/app/staticfiles
