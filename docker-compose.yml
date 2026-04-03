@@ -50,6 +50,13 @@ services:
     networks:
       - default
       - dokploy-network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=dokploy-network"
+      - "traefik.http.routers.thebequer-fe.rule=Host(`thebequer.tech`) || Host(`www.thebequer.tech`)"
+      - "traefik.http.routers.thebequer-fe.entrypoints=websecure"
+      - "traefik.http.routers.thebequer-fe.tls.certresolver=letsencrypt"
+      - "traefik.http.services.thebequer-fe.loadbalancer.server.port=80"
 
 volumes:
   postgres_data:
