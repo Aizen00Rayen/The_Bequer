@@ -21,7 +21,7 @@ class VideoLessonSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = VideoLesson
-        fields = ['id', 'title', 'description', 'duration_seconds', 'order', 'course', 'stream_url', 'video_file', 'status']
+        fields = ['id', 'title', 'description', 'duration_seconds', 'order', 'course', 'stream_url', 'video_file', 'status', 'is_free_preview']
 
     def get_stream_url(self, obj):
         request = self.context.get('request')
@@ -44,9 +44,11 @@ class TrainingSerializer(serializers.ModelSerializer):
         request = self.context.get('request')
         user = request.user if request else None
         qs = obj.videos.all()
-        # If no user or user is a regular student, show ONLY approved videos
         if not user or not user.is_authenticated or user.role not in ['admin', 'teacher']:
-            qs = qs.filter(status='approved')
+            # Public users see approved videos; metadata only (stream blocked at view level)
+            # is_free_preview videos are also included so the player can render on CourseDetail
+            from django.db.models import Q
+            qs = qs.filter(Q(status='approved') | Q(is_free_preview=True))
         return VideoLessonSerializer(qs, many=True, context=self.context).data
 
 

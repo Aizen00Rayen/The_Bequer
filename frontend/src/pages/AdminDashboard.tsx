@@ -32,6 +32,7 @@ interface VideoLesson {
     duration_seconds: number;
     order: number;
     status?: string;
+    is_free_preview?: boolean;
 }
 
 interface Course {
@@ -702,6 +703,29 @@ const AdminDashboard = () => {
                 toast({ variant: "destructive", title: "Erreur", description: "Impossible de refuser la vidéo." });
             }
         } catch (error) {
+            toast({ variant: "destructive", title: "Erreur", description: "Erreur réseau." });
+        }
+    };
+
+    const setPreviewVideo = async (videoId: number, courseId: number, isPreview: boolean) => {
+        try {
+            const endpoint = isPreview ? 'set_preview' : 'unset_preview';
+            const response = await fetch(`/api/video-lessons/${videoId}/${endpoint}/`, {
+                method: "POST",
+                headers: getHeaders(),
+            });
+            if (handleAuthError(response)) return;
+            if (response.ok) {
+                const updatedVideo = await response.json();
+                setCourses(courses.map(c => c.id === courseId ? {
+                    ...c, videos: c.videos?.map(v => {
+                        if (isPreview) return v.id === videoId ? updatedVideo : { ...v, is_free_preview: false };
+                        return v.id === videoId ? updatedVideo : v;
+                    })
+                } : c));
+                toast({ title: isPreview ? "Aperçu défini" : "Aperçu retiré", description: isPreview ? "Cette vidéo est maintenant visible par tous gratuitement." : "La vidéo n'est plus en aperçu gratuit." });
+            }
+        } catch {
             toast({ variant: "destructive", title: "Erreur", description: "Erreur réseau." });
         }
     };
@@ -1400,11 +1424,19 @@ const AdminDashboard = () => {
                                                                                             {video.status && (
                                                                                                 <span className={`text-xs px-2 py-0.5 rounded-full border ${video.status === 'approved' ? 'bg-green-500/10 text-green-600 border-green-500/20' : video.status === 'rejected' ? 'bg-red-500/10 text-red-500 border-red-500/20' : 'bg-yellow-500/10 text-yellow-600 border-yellow-500/20'}`}>{video.status === 'approved' ? 'Approuvée' : video.status === 'rejected' ? 'Refusée' : 'En attente'}</span>
                                                                                             )}
+                                                                                            {video.is_free_preview && (
+                                                                                                <span className="text-xs px-2 py-0.5 rounded-full border bg-orange-500/10 text-orange-500 border-orange-500/20">⭐ Aperçu gratuit</span>
+                                                                                            )}
                                                                                             {video.description && <p className="text-xs text-muted-foreground line-clamp-1">{video.description}</p>}
                                                                                         </div>
-                                                                                        <div className="flex gap-2 mb-3">
+                                                                                        <div className="flex gap-2 mb-3 flex-wrap">
                                                                                             {video.status !== 'approved' && <Button size="sm" variant="outline" className="text-green-600 border-green-500/30 hover:bg-green-500/10 px-2 py-1 h-auto text-xs" onClick={() => approveVideo(video.id, course.id)}>Approuver</Button>}
                                                                                             {video.status !== 'rejected' && <Button size="sm" variant="outline" className="text-red-500 border-red-500/30 hover:bg-red-500/10 px-2 py-1 h-auto text-xs" onClick={() => rejectVideo(video.id, course.id)}>Refuser</Button>}
+                                                                                            {video.is_free_preview ? (
+                                                                                                <Button size="sm" variant="outline" className="text-orange-500 border-orange-500/30 hover:bg-orange-500/10 px-2 py-1 h-auto text-xs" onClick={() => setPreviewVideo(video.id, course.id, false)}>⭐ Aperçu actif — retirer</Button>
+                                                                                            ) : (
+                                                                                                <Button size="sm" variant="outline" className="text-blue-500 border-blue-500/30 hover:bg-blue-500/10 px-2 py-1 h-auto text-xs" onClick={() => setPreviewVideo(video.id, course.id, true)}>Définir comme aperçu</Button>
+                                                                                            )}
                                                                                         </div>
                                                                                         <video
                                                                                             className="w-full max-w-sm rounded-md border border-border bg-black"

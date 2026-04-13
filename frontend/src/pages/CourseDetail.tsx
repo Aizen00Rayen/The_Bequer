@@ -174,6 +174,7 @@ const CourseDetail = () => {
 
     const sortedVideos = [...(course.videos ?? [])].sort((a, b) => a.order - b.order);
     const totalSeconds = sortedVideos.reduce((s, v) => s + v.duration_seconds, 0);
+    const previewVideo = sortedVideos.find((v: any) => v.is_free_preview);
 
     return (
         <div className="min-h-screen bg-background flex flex-col">
@@ -354,6 +355,34 @@ const CourseDetail = () => {
                     </div>
                 </section>
 
+                {/* ── Free Preview Video ── */}
+                {previewVideo && (
+                    <section id="preview-player" className="py-10 md:py-14 border-b border-border bg-card/30">
+                        <div className="container max-w-6xl mx-auto px-4">
+                            <div className="max-w-3xl mx-auto">
+                                <div className="flex items-center gap-2 mb-4">
+                                    <span className="inline-flex items-center gap-1.5 text-sm font-semibold bg-orange-500/10 text-orange-500 border border-orange-500/20 px-3 py-1 rounded-full">
+                                        <PlayCircle className="h-4 w-4" /> Aperçu gratuit
+                                    </span>
+                                    <span className="text-sm text-muted-foreground">{previewVideo.title}</span>
+                                </div>
+                                <div className="rounded-2xl overflow-hidden border border-border shadow-lg bg-black">
+                                    <video
+                                        className="w-full aspect-video"
+                                        controls
+                                        controlsList="nodownload"
+                                        src={previewVideo.stream_url}
+                                        preload="metadata"
+                                    />
+                                </div>
+                                {previewVideo.description && (
+                                    <p className="mt-3 text-sm text-muted-foreground">{previewVideo.description}</p>
+                                )}
+                            </div>
+                        </div>
+                    </section>
+                )}
+
                 {/* ── Syllabus ── */}
                 <section className="py-12 md:py-16">
                     <div className="container max-w-6xl mx-auto px-4">
@@ -372,18 +401,21 @@ const CourseDetail = () => {
                                 {sortedVideos.map((video, i) => (
                                     <div
                                         key={video.id}
-                                        className={`flex items-center gap-4 p-4 rounded-xl border transition-colors ${isEnrolled
+                                        className={`flex items-center gap-4 p-4 rounded-xl border transition-colors ${isEnrolled || (video as any).is_free_preview
                                             ? "bg-card border-border hover:border-primary/30 hover:bg-primary/5 cursor-pointer"
                                             : "bg-card/50 border-border/50"
                                             }`}
-                                        onClick={() => isEnrolled && navigate("/student-dashboard")}
+                                        onClick={() => {
+                                            if (isEnrolled) navigate("/student-dashboard");
+                                            else if ((video as any).is_free_preview) document.getElementById('preview-player')?.scrollIntoView({ behavior: 'smooth' });
+                                        }}
                                     >
                                         {/* Order badge */}
-                                        <div className={`w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold shrink-0 ${isEnrolled
+                                        <div className={`w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold shrink-0 ${isEnrolled || (video as any).is_free_preview
                                             ? "bg-primary/10 text-primary"
                                             : "bg-muted text-muted-foreground"
                                             }`}>
-                                            {isEnrolled ? (
+                                            {isEnrolled || (video as any).is_free_preview ? (
                                                 <PlayCircle className="h-4 w-4" />
                                             ) : (
                                                 <Lock className="h-4 w-4" />
@@ -392,10 +424,16 @@ const CourseDetail = () => {
 
                                         {/* Title */}
                                         <div className="flex-1 min-w-0">
-                                            <p className={`text-sm font-medium truncate ${isEnrolled ? "text-foreground" : "text-muted-foreground"
-                                                }`}>
-                                                {i + 1}. {video.title}
-                                            </p>
+                                            <div className="flex items-center gap-2 flex-wrap">
+                                                <p className={`text-sm font-medium truncate ${isEnrolled || (video as any).is_free_preview ? "text-foreground" : "text-muted-foreground"}`}>
+                                                    {i + 1}. {video.title}
+                                                </p>
+                                                {(video as any).is_free_preview && (
+                                                    <span className="text-xs bg-orange-500/10 text-orange-500 border border-orange-500/20 px-1.5 py-0.5 rounded-full shrink-0">
+                                                        Gratuit
+                                                    </span>
+                                                )}
+                                            </div>
                                             {video.description && (
                                                 <p className="text-xs text-muted-foreground mt-0.5 truncate">
                                                     {video.description}

@@ -44,22 +44,23 @@ def file_iterator(file_path, chunk_size=8192, offset=0, length=None):
 
 @api_view(['GET'])
 def stream_video(request, pk):
-    token = request.GET.get('token')
-    if not token:
-        return Response({"error": "Token missing"}, status=401)
-        
-    try:
-        access_token = AccessToken(token)
-        user = User.objects.get(id=access_token['user_id'])
-        if not (user.is_active and user.is_approved):
-             return Response({"error": "Unauthorized user"}, status=401)
-    except (TokenError, User.DoesNotExist):
-        return Response({"error": "Invalid token"}, status=401)
-
     try:
         video = VideoLesson.objects.get(pk=pk)
     except VideoLesson.DoesNotExist:
         raise Http404
+
+    # Free preview videos are accessible without authentication
+    if not video.is_free_preview:
+        token = request.GET.get('token')
+        if not token:
+            return Response({"error": "Token missing"}, status=401)
+        try:
+            access_token = AccessToken(token)
+            user = User.objects.get(id=access_token['user_id'])
+            if not (user.is_active and user.is_approved):
+                return Response({"error": "Unauthorized user"}, status=401)
+        except (TokenError, User.DoesNotExist):
+            return Response({"error": "Invalid token"}, status=401)
 
     path = video.video_file.path
     if not os.path.exists(path):
@@ -157,6 +158,26 @@ class VideoLessonViewSet(viewsets.ModelViewSet):
             return Response({'detail': 'Admin only.'}, status=status.HTTP_403_FORBIDDEN)
         video = self.get_object()
         video.status = 'rejected'
+        video.save()
+        return Response(VideoLessonSerializer(video).data)
+
+    @action(detail=True, methods=['post'], permission_classes=[permissions.IsAuthenticated])
+    def set_preview(self, request, pk=None):
+        if request.user.role != 'admin':
+            return Response({'detail': 'Admin only.'}, status=status.HTTP_403_FORBIDDEN)
+        video = self.get_object()
+        # Unset any existing preview for this course, then set this one
+        VideoLesson.objects.filter(course=video.course, is_free_preview=True).update(is_free_preview=False)
+        video.is_free_preview = True
+        video.save()
+        return Response(VideoLessonSerializer(video).data)
+
+    @action(detail=True, methods=['post'], permission_classes=[permissions.IsAuthenticated])
+    def unset_preview(self, request, pk=None):
+        if request.user.role != 'admin':
+            return Response({'detail': 'Admin only.'}, status=status.HTTP_403_FORBIDDEN)
+        video = self.get_object()
+        video.is_free_preview = False
         video.save()
         return Response(VideoLessonSerializer(video).data)
 

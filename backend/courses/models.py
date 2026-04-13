@@ -66,6 +66,7 @@ class VideoLesson(models.Model):
     duration_seconds = models.PositiveIntegerField(default=0, verbose_name="Durée en secondes")
     order = models.PositiveIntegerField(default=0, verbose_name="Ordre de lecture")
     status = models.CharField(max_length=15, choices=STATUS_CHOICES, default=STATUS_PENDING, verbose_name="Statut")
+    is_free_preview = models.BooleanField(default=False, verbose_name="Vidéo d'aperçu gratuite")
 
     class Meta:
         verbose_name = "Leçon Vidéo"
